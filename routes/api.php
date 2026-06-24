@@ -62,7 +62,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/genre/{id}', [GenreController::class, 'delete']);
 
     // =========================
-    // MANGA
+    // MANGAA
     // =========================
 
     Route::get('/manga', [MangaController::class, 'index']);
