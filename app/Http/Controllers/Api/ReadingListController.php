@@ -3,52 +3,62 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\DistrictModel;
+use App\Models\ReadingListModel;
 use App\Helpers\ApiFormatter;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class DistrictController extends Controller
+class ReadingListController extends Controller
 {
-    // 1. Ambil Semua Data District
+    // GET ALL READING LIST
     public function index()
     {
-        $district = DistrictModel::orderBy('district_id', 'ASC')->get();
+        $readingList = ReadingListModel::orderBy(
+            'reading_list_id',
+            'ASC'
+        )->get();
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
                 'Get Data Success',
-                $district
+                $readingList
             )
         );
     }
 
-    // 2. Ambil Semua Data District berdasarkan ID City
-    public function byCity($city_id)
+    // GET READING LIST BY MANGA
+    public function byManga($manga_id)
     {
-        $district = DistrictModel::where('city_id', $city_id)->get();
+        $readingList = ReadingListModel::where(
+            'manga_id',
+            $manga_id
+        )->get();
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
                 'Get Data Success',
-                $district
+                $readingList
             )
         );
     }
 
-    // 3. Buat Data Baru District
+    // CREATE READING LIST
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'city_id' => 'required',
-            'district_code' => 'required|max:10',
-            'district_name' => 'required'
+            'manga_id' => 'required',
+            'user_id' => 'nullable',
+            'reading_status' => 'required',
+            'chapter_read' => 'required',
+            'rating' => 'nullable',
+            'notes' => 'nullable'
         ]);
 
         if ($validator->fails()) {
+
             return response()->json(
                 ApiFormatter::createJson(
                     400,
@@ -58,27 +68,31 @@ class DistrictController extends Controller
             );
         }
 
-        $district = DistrictModel::create([
-            'city_id' => $request->city_id,
-            'district_code' => $request->district_code,
-            'district_name' => $request->district_name
+        $readingList = ReadingListModel::create([
+            'manga_id' => $request->manga_id,
+            'user_id' => $request->user_id,
+            'reading_status' => $request->reading_status,
+            'chapter_read' => $request->chapter_read,
+            'rating' => $request->rating,
+            'notes' => $request->notes
         ]);
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
-                'Create District Success',
-                $district
+                'Create Reading List Success',
+                $readingList
             )
         );
     }
 
-    // 4. Ambil Detail District
+    // DETAIL READING LIST
     public function detail($id)
     {
-        $district = DistrictModel::find($id);
+        $readingList = ReadingListModel::find($id);
 
-        if (!$district) {
+        if (!$readingList) {
+
             return response()->json(
                 ApiFormatter::createJson(
                     404,
@@ -90,18 +104,19 @@ class DistrictController extends Controller
         return response()->json(
             ApiFormatter::createJson(
                 200,
-                'Get Detail District Success',
-                $district
+                'Get Detail Reading List Success',
+                $readingList
             )
         );
     }
 
-    // 5. Update District
+    // UPDATE READING LIST
     public function update(Request $request, $id)
     {
-        $district = DistrictModel::find($id);
+        $readingList = ReadingListModel::find($id);
 
-        if (!$district) {
+        if (!$readingList) {
+
             return response()->json(
                 ApiFormatter::createJson(
                     404,
@@ -110,43 +125,31 @@ class DistrictController extends Controller
             );
         }
 
-        $validator = Validator::make($request->all(), [
-            'city_id' => 'required',
-            'district_code' => 'required|max:10',
-            'district_name' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                ApiFormatter::createJson(
-                    400,
-                    'Bad Request',
-                    $validator->errors()
-                )
-            );
-        }
-
-        $district->update([
-            'city_id' => $request->city_id,
-            'district_code' => $request->district_code,
-            'district_name' => $request->district_name
+        $readingList->update([
+            'manga_id' => $request->manga_id,
+            'user_id' => $request->user_id,
+            'reading_status' => $request->reading_status,
+            'chapter_read' => $request->chapter_read,
+            'rating' => $request->rating,
+            'notes' => $request->notes
         ]);
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
-                'Update District Success',
-                $district->fresh()
+                'Update Reading List Success',
+                $readingList->fresh()
             )
         );
     }
 
-    // 6. Hapus District
+    // DELETE READING LIST
     public function delete($id)
     {
-        $district = DistrictModel::find($id);
+        $readingList = ReadingListModel::find($id);
 
-        if (!$district) {
+        if (!$readingList) {
+
             return response()->json(
                 ApiFormatter::createJson(
                     404,
@@ -155,12 +158,12 @@ class DistrictController extends Controller
             );
         }
 
-        $district->delete();
+        $readingList->delete();
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
-                'Delete District Success'
+                'Delete Reading List Success'
             )
         );
     }
