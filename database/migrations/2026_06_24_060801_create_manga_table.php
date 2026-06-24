@@ -12,8 +12,31 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('manga', function (Blueprint $table) {
-            $table->id();
+
+            $table->increments('manga_id');
+
+            $table->unsignedInteger('genre_id');
+
+            $table->string('manga_code', 10);
+
+            $table->string('manga_title');
+
+            $table->string('author');
+
+            $table->enum('status', [
+                'Ongoing',
+                'Completed',
+                'Hiatus'
+            ])->default('Ongoing');
+
             $table->timestamps();
+
+            $table->softDeletes();
+
+            $table->foreign('genre_id')
+                ->references('genre_id')
+                ->on('genre')
+                ->onDelete('cascade');
         });
     }
 

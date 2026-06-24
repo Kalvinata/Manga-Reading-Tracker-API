@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('genre', function (Blueprint $table) {
-            $table->id();
+
+            $table->increments('genre_id');
+
+            $table->string('genre_code', 10);
+
+            $table->string('genre_name');
+
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 
