@@ -3,25 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProvinceModel;
+use App\Models\GenreModel;
 use App\Helpers\ApiFormatter;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ProvinceController extends Controller
+class GenreController extends Controller
 {
-    // GET ALL DATA
+    // GET ALL GENRE
     public function index(Request $request)
     {
-        $province = ProvinceModel::orderBy('province_id', 'ASC')->get();
+        $genre = GenreModel::orderBy('genre_id', 'ASC')->get();
 
-        $response = ApiFormatter::createJson(200, 'Get Data Success', $province);
+        $response = ApiFormatter::createJson(
+            200,
+            'Get Data Success',
+            $genre
+        );
 
         return response()->json($response);
     }
 
-    // CREATE DATA
+    // CREATE GENRE
     public function create(Request $request)
     {
         try {
@@ -32,92 +36,102 @@ class ProvinceController extends Controller
                 'code' => 'required|max:10',
                 'name' => 'required',
             ], [
-                'code.required' => 'Province Code is required',
-                'code.max' => 'Province Code max 10 characters',
-                'name.required' => 'Province Name is required',
+                'code.required' => 'Genre Code is required',
+                'code.max' => 'Genre Code max 10 characters',
+                'name.required' => 'Genre Name is required',
             ]);
 
             if ($validator->fails()) {
 
-                $response = ApiFormatter::createJson(
-                    400,
-                    'Bad Request',
-                    $validator->errors()
+                return response()->json(
+                    ApiFormatter::createJson(
+                        400,
+                        'Bad Request',
+                        $validator->errors()
+                    )
                 );
-
-                return response()->json($response);
             }
 
-            $province = [
-                'province_code' => $params['code'],
-                'province_name' => $params['name'],
+            $genre = [
+                'genre_code' => $params['code'],
+                'genre_name' => $params['name'],
             ];
 
-            $data = ProvinceModel::create($province);
+            $data = GenreModel::create($genre);
 
-            $createdProvince = ProvinceModel::find($data->province_id);
+            $createdGenre = GenreModel::find($data->genre_id);
 
-            $response = ApiFormatter::createJson(
-                200,
-                'Create Province Success',
-                $createdProvince
+            return response()->json(
+                ApiFormatter::createJson(
+                    200,
+                    'Create Genre Success',
+                    $createdGenre
+                )
             );
-
-            return response()->json($response);
 
         } catch (\Exception $e) {
 
-            $response = ApiFormatter::createJson(
-                500,
-                'Internal Server Error',
-                $e->getMessage()
+            return response()->json(
+                ApiFormatter::createJson(
+                    500,
+                    'Internal Server Error',
+                    $e->getMessage()
+                )
             );
-
-            return response()->json($response);
         }
     }
 
-    // DETAIL DATA
+    // DETAIL GENRE
     public function detail($id)
     {
         try {
 
-            $province = ProvinceModel::find($id);
+            $genre = GenreModel::find($id);
 
-            if (is_null($province)) {
-                return ApiFormatter::createJson(404, 'Province Not Found');
+            if (is_null($genre)) {
+                return response()->json(
+                    ApiFormatter::createJson(
+                        404,
+                        'Genre Not Found'
+                    )
+                );
             }
 
-            $response = ApiFormatter::createJson(
-                200,
-                'Get Detail Province Success',
-                $province
+            return response()->json(
+                ApiFormatter::createJson(
+                    200,
+                    'Get Detail Genre Success',
+                    $genre
+                )
             );
-
-            return response()->json($response);
 
         } catch (\Exception $e) {
 
-            $response = ApiFormatter::createJson(
-                400,
-                $e->getMessage()
+            return response()->json(
+                ApiFormatter::createJson(
+                    400,
+                    $e->getMessage()
+                )
             );
-
-            return response()->json($response);
         }
     }
 
-    // UPDATE SEMUA DATA
+    // UPDATE GENRE
     public function update(Request $request, $id)
     {
         try {
 
             $params = $request->all();
 
-            $preProvince = ProvinceModel::find($id);
+            $preGenre = GenreModel::find($id);
 
-            if (is_null($preProvince)) {
-                return ApiFormatter::createJson(404, 'Data Not Found');
+            if (is_null($preGenre)) {
+                return response()->json(
+                    ApiFormatter::createJson(
+                        404,
+                        'Data Not Found'
+                    )
+                );
             }
 
             $validator = Validator::make($params, [
@@ -127,120 +141,126 @@ class ProvinceController extends Controller
 
             if ($validator->fails()) {
 
-                $response = ApiFormatter::createJson(
-                    400,
-                    'Bad Request',
-                    $validator->errors()
+                return response()->json(
+                    ApiFormatter::createJson(
+                        400,
+                        'Bad Request',
+                        $validator->errors()
+                    )
                 );
-
-                return response()->json($response);
             }
 
-            $province = [
-                'province_code' => $params['code'],
-                'province_name' => $params['name'],
+            $genre = [
+                'genre_code' => $params['code'],
+                'genre_name' => $params['name'],
             ];
 
-            $preProvince->update($province);
+            $preGenre->update($genre);
 
-            $updatedProvince = $preProvince->fresh();
-
-            $response = ApiFormatter::createJson(
-                200,
-                'Update Province Success',
-                $updatedProvince
+            return response()->json(
+                ApiFormatter::createJson(
+                    200,
+                    'Update Genre Success',
+                    $preGenre->fresh()
+                )
             );
-
-            return response()->json($response);
 
         } catch (\Exception $e) {
 
-            $response = ApiFormatter::createJson(
-                500,
-                'Internal Server Error',
-                $e->getMessage()
+            return response()->json(
+                ApiFormatter::createJson(
+                    500,
+                    'Internal Server Error',
+                    $e->getMessage()
+                )
             );
-
-            return response()->json($response);
         }
     }
 
-    // UPDATE SEBAGIAN DATA
+    // PATCH GENRE
     public function patch(Request $request, $id)
     {
         try {
 
             $params = $request->all();
 
-            $preProvince = ProvinceModel::find($id);
+            $preGenre = GenreModel::find($id);
 
-            if (is_null($preProvince)) {
-                return ApiFormatter::createJson(404, 'Data Not Found');
+            if (is_null($preGenre)) {
+                return response()->json(
+                    ApiFormatter::createJson(
+                        404,
+                        'Data Not Found'
+                    )
+                );
             }
 
-            $province = [];
+            $genre = [];
 
             if (isset($params['code'])) {
-                $province['province_code'] = $params['code'];
+                $genre['genre_code'] = $params['code'];
             }
 
             if (isset($params['name'])) {
-                $province['province_name'] = $params['name'];
+                $genre['genre_name'] = $params['name'];
             }
 
-            $preProvince->update($province);
+            $preGenre->update($genre);
 
-            $updatedProvince = $preProvince->fresh();
-
-            $response = ApiFormatter::createJson(
-                200,
-                'Update Province Success',
-                $updatedProvince
+            return response()->json(
+                ApiFormatter::createJson(
+                    200,
+                    'Update Genre Success',
+                    $preGenre->fresh()
+                )
             );
-
-            return response()->json($response);
 
         } catch (\Exception $e) {
 
-            $response = ApiFormatter::createJson(
-                500,
-                'Internal Server Error',
-                $e->getMessage()
+            return response()->json(
+                ApiFormatter::createJson(
+                    500,
+                    'Internal Server Error',
+                    $e->getMessage()
+                )
             );
-
-            return response()->json($response);
         }
     }
 
-    // DELETE DATA
+    // DELETE GENRE
     public function delete($id)
     {
         try {
 
-            $province = ProvinceModel::find($id);
+            $genre = GenreModel::find($id);
 
-            if (is_null($province)) {
-                return ApiFormatter::createJson(404, 'Data Not Found');
+            if (is_null($genre)) {
+                return response()->json(
+                    ApiFormatter::createJson(
+                        404,
+                        'Data Not Found'
+                    )
+                );
             }
 
-            $province->delete();
+            $genre->delete();
 
-            $response = ApiFormatter::createJson(
-                200,
-                'Delete Province Success'
+            return response()->json(
+                ApiFormatter::createJson(
+                    200,
+                    'Delete Genre Success'
+                )
             );
-
-            return response()->json($response);
 
         } catch (\Exception $e) {
 
-            $response = ApiFormatter::createJson(
-                500,
-                'Internal Server Error',
-                $e->getMessage()
+            return response()->json(
+                ApiFormatter::createJson(
+                    500,
+                    'Internal Server Error',
+                    $e->getMessage()
+                )
             );
-
-            return response()->json($response);
         }
     }
 }
