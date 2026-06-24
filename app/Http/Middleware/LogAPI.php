@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Models\LogModel;
+use App\Models\ActivityLogModel;
 use App\Helpers\ApiFormatter;
 use Throwable;
 
@@ -23,14 +23,16 @@ class LogAPI
             $user = null;
         }
 
-        $filteredRequest = ApiFormatter::filterSensitiveData($request->all());
+        $filteredRequest = ApiFormatter::filterSensitiveData(
+            $request->all()
+        );
 
-        $log = LogModel::create([
-            'user_id'    => $user ? $user->id : null,
+        $log = ActivityLogModel::create([
+            'user_id' => $user ? $user->id : null,
             'log_method' => $request->method(),
-            'log_url'    => $request->fullUrl(),
-            'log_ip'     => $request->ip(),
-            'log_request'=> json_encode($filteredRequest),
+            'log_url' => $request->fullUrl(),
+            'log_ip' => $request->ip(),
+            'log_request' => json_encode($filteredRequest),
         ]);
 
         try {
@@ -52,7 +54,7 @@ class LogAPI
             );
 
             $log->update([
-                'log_response' => response()->json($errorResponse, 500),
+                'log_response' => json_encode($errorResponse),
             ]);
 
             return response()->json($errorResponse, 500);
