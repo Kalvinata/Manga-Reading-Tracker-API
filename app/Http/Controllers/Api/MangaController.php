@@ -3,54 +3,56 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\CityModel;
+use App\Models\MangaModel;
 use App\Helpers\ApiFormatter;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CityController extends Controller
+class MangaController extends Controller
 {
-    // GET ALL CITY
+    // GET ALL MANGA
     public function index()
     {
-        $city = CityModel::orderBy('city_id', 'ASC')->get();
+        $manga = MangaModel::orderBy('manga_id', 'ASC')->get();
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
                 'Get Data Success',
-                $city
+                $manga
             )
         );
     }
 
-    // GET CITY BY PROVINCE
-    public function byProvince($province_id)
+    // GET MANGA BY GENRE
+    public function byGenre($genre_id)
     {
-        $city = CityModel::where(
-            'province_id',
-            $province_id
+        $manga = MangaModel::where(
+            'genre_id',
+            $genre_id
         )->get();
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
                 'Get Data Success',
-                $city
+                $manga
             )
         );
     }
 
-    // CREATE CITY
+    // CREATE MANGA
     public function create(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'province_id' => 'required',
+                'genre_id' => 'required',
                 'code' => 'required|max:10',
-                'name' => 'required'
+                'title' => 'required',
+                'author' => 'required',
+                'status' => 'required'
             ]
         );
 
@@ -65,27 +67,29 @@ class CityController extends Controller
             );
         }
 
-        $city = CityModel::create([
-            'province_id' => $request->province_id,
-            'city_code' => $request->code,
-            'city_name' => $request->name
+        $manga = MangaModel::create([
+            'genre_id' => $request->genre_id,
+            'manga_code' => $request->code,
+            'manga_title' => $request->title,
+            'author' => $request->author,
+            'status' => $request->status
         ]);
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
-                'Create City Success',
-                $city
+                'Create Manga Success',
+                $manga
             )
         );
     }
 
-    // DETAIL CITY
+    // DETAIL MANGA
     public function detail($id)
     {
-        $city = CityModel::find($id);
+        $manga = MangaModel::find($id);
 
-        if (!$city) {
+        if (!$manga) {
 
             return response()->json(
                 ApiFormatter::createJson(
@@ -98,18 +102,18 @@ class CityController extends Controller
         return response()->json(
             ApiFormatter::createJson(
                 200,
-                'Get Detail Success',
-                $city
+                'Get Detail Manga Success',
+                $manga
             )
         );
     }
 
-    // UPDATE CITY
+    // UPDATE MANGA
     public function update(Request $request, $id)
     {
-        $city = CityModel::find($id);
+        $manga = MangaModel::find($id);
 
-        if (!$city) {
+        if (!$manga) {
 
             return response()->json(
                 ApiFormatter::createJson(
@@ -119,27 +123,29 @@ class CityController extends Controller
             );
         }
 
-        $city->update([
-            'province_id' => $request->province_id,
-            'city_code' => $request->code,
-            'city_name' => $request->name
+        $manga->update([
+            'genre_id' => $request->genre_id,
+            'manga_code' => $request->code,
+            'manga_title' => $request->title,
+            'author' => $request->author,
+            'status' => $request->status
         ]);
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
-                'Update City Success',
-                $city->fresh()
+                'Update Manga Success',
+                $manga->fresh()
             )
         );
     }
 
-    // DELETE CITY
+    // DELETE MANGA
     public function delete($id)
     {
-        $city = CityModel::find($id);
+        $manga = MangaModel::find($id);
 
-        if (!$city) {
+        if (!$manga) {
 
             return response()->json(
                 ApiFormatter::createJson(
@@ -149,12 +155,12 @@ class CityController extends Controller
             );
         }
 
-        $city->delete();
+        $manga->delete();
 
         return response()->json(
             ApiFormatter::createJson(
                 200,
-                'Delete City Success'
+                'Delete Manga Success'
             )
         );
     }
