@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class LogModel extends Model
+class ActivityLogModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'log';
+    protected $table = 'activity_log';
+
     protected $primaryKey = 'log_id';
 
     protected $fillable = [
