@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DateTimeInterface;
 
-class ProvinceModel extends Model
+class GenreModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'province';
+    protected $table = 'genre';
 
-    protected $primaryKey = 'province_id';
+    protected $primaryKey = 'genre_id';
 
     protected $fillable = [
-        'province_id',
-        'province_code',
-        'province_name'
+        'genre_id',
+        'genre_code',
+        'genre_name'
     ];
 
     protected $hidden = [
