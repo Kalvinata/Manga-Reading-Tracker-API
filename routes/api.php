@@ -3,65 +3,80 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ProvinceController;
-use App\Http\Controllers\Api\CityController;
-use App\Http\Controllers\Api\DistrictController;
+use App\Http\Controllers\Api\GenreController;
+use App\Http\Controllers\Api\MangaController;
+use App\Http\Controllers\Api\ReadingListController;
 
-// District
-Route::get('/district', [DistrictController::class, 'index']);
-Route::get('/district/city/{city_id}', [DistrictController::class, 'byCity']);
+// =========================
+// READING LIST
+// =========================
 
-Route::post('/district', [DistrictController::class, 'create']);
+Route::get('/reading-list', [ReadingListController::class, 'index']);
 
-Route::get('/district/{id}', [DistrictController::class, 'detail']);
+Route::get(
+    '/reading-list/manga/{manga_id}',
+    [ReadingListController::class, 'byManga']
+);
 
-Route::put('/district/{id}', [DistrictController::class, 'update']);
+Route::post('/reading-list', [ReadingListController::class, 'create']);
 
-Route::delete('/district/{id}', [DistrictController::class, 'delete']);
+Route::get('/reading-list/{id}', [ReadingListController::class, 'detail']);
 
-// LOGIN (tidak perlu token)
+Route::put('/reading-list/{id}', [ReadingListController::class, 'update']);
+
+Route::delete('/reading-list/{id}', [ReadingListController::class, 'delete']);
+
+
+// =========================
+// LOGIN
+// =========================
+
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
 
+    // =========================
     // AUTH
+    // =========================
+
     Route::get('/me', [AuthController::class, 'me']);
+
     Route::get('/refresh', [AuthController::class, 'refresh']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // =========================
-    // PROVINCE
+    // GENRE
     // =========================
 
-    Route::get('/province', [ProvinceController::class, 'index']);
+    Route::get('/genre', [GenreController::class, 'index']);
 
-    Route::post('/province', [ProvinceController::class, 'create']);
+    Route::post('/genre', [GenreController::class, 'create']);
 
-    Route::get('/province/{id}', [ProvinceController::class, 'detail']);
+    Route::get('/genre/{id}', [GenreController::class, 'detail']);
 
-    Route::put('/province/{id}', [ProvinceController::class, 'update']);
+    Route::put('/genre/{id}', [GenreController::class, 'update']);
 
-    Route::patch('/province/{id}', [ProvinceController::class, 'patch']);
+    Route::patch('/genre/{id}', [GenreController::class, 'patch']);
 
-    Route::delete('/province/{id}', [ProvinceController::class, 'delete']);
+    Route::delete('/genre/{id}', [GenreController::class, 'delete']);
 
     // =========================
-    // CITY
+    // MANGA
     // =========================
 
-    Route::get('/city', [CityController::class, 'index']);
+    Route::get('/manga', [MangaController::class, 'index']);
 
     Route::get(
-        '/city/province/{province_id}',
-        [CityController::class, 'byProvince']
+        '/manga/genre/{genre_id}',
+        [MangaController::class, 'byGenre']
     );
 
-    Route::post('/city', [CityController::class, 'create']);
+    Route::post('/manga', [MangaController::class, 'create']);
 
-    Route::get('/city/{id}', [CityController::class, 'detail']);
+    Route::get('/manga/{id}', [MangaController::class, 'detail']);
 
-    Route::put('/city/{id}', [CityController::class, 'update']);
+    Route::put('/manga/{id}', [MangaController::class, 'update']);
 
-    Route::delete('/city/{id}', [CityController::class, 'delete']);
-    
+    Route::delete('/manga/{id}', [MangaController::class, 'delete']);
 });
