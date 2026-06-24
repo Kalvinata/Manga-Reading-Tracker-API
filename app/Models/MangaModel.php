@@ -5,18 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CityModel extends Model
+class MangaModel extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'city';
+    protected $table = 'manga';
 
-    protected $primaryKey = 'city_id';
+    protected $primaryKey = 'manga_id';
 
     protected $fillable = [
-        'province_id',
-        'city_code',
-        'city_name'
+        'genre_id',
+        'manga_code',
+        'manga_title',
+        'author',
+        'status'
     ];
 
     public $timestamps = true;
