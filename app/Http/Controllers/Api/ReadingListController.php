@@ -19,12 +19,10 @@ class ReadingListController extends Controller
             'ASC'
         )->get();
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Get Data Success',
-                $readingList
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Get Data Success',
+            $readingList
         );
     }
 
@@ -36,12 +34,10 @@ class ReadingListController extends Controller
             $manga_id
         )->get();
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Get Data Success',
-                $readingList
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Get Data Success',
+            $readingList
         );
     }
 
@@ -59,12 +55,10 @@ class ReadingListController extends Controller
 
         if ($validator->fails()) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    400,
-                    'Bad Request',
-                    $validator->errors()
-                )
+            return ApiFormatter::createJson(
+                400,
+                'Bad Request',
+                $validator->errors()
             );
         }
 
@@ -77,12 +71,10 @@ class ReadingListController extends Controller
             'notes' => $request->notes
         ]);
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Create Reading List Success',
-                $readingList
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Create Reading List Success',
+            $readingList
         );
     }
 
@@ -93,20 +85,16 @@ class ReadingListController extends Controller
 
         if (!$readingList) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    404,
-                    'Data Not Found'
-                )
+            return ApiFormatter::createJson(
+                404,
+                'Data Not Found'
             );
         }
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Get Detail Reading List Success',
-                $readingList
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Get Detail Reading List Success',
+            $readingList
         );
     }
 
@@ -117,11 +105,9 @@ class ReadingListController extends Controller
 
         if (!$readingList) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    404,
-                    'Data Not Found'
-                )
+            return ApiFormatter::createJson(
+                404,
+                'Data Not Found'
             );
         }
 
@@ -134,12 +120,10 @@ class ReadingListController extends Controller
             'notes' => $request->notes
         ]);
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Update Reading List Success',
-                $readingList->fresh()
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Update Reading List Success',
+            $readingList->fresh()
         );
     }
 
@@ -150,21 +134,17 @@ class ReadingListController extends Controller
 
         if (!$readingList) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    404,
-                    'Data Not Found'
-                )
+            return ApiFormatter::createJson(
+                404,
+                'Data Not Found'
             );
         }
 
         $readingList->delete();
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Delete Reading List Success'
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Delete Reading List Success'
         );
     }
 }

@@ -16,12 +16,10 @@ class MangaController extends Controller
     {
         $manga = MangaModel::orderBy('manga_id', 'ASC')->get();
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Get Data Success',
-                $manga
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Get Data Success',
+            $manga
         );
     }
 
@@ -33,12 +31,10 @@ class MangaController extends Controller
             $genre_id
         )->get();
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Get Data Success',
-                $manga
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Get Data Success',
+            $manga
         );
     }
 
@@ -58,12 +54,10 @@ class MangaController extends Controller
 
         if ($validator->fails()) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    400,
-                    'Bad Request',
-                    $validator->errors()
-                )
+            return ApiFormatter::createJson(
+                400,
+                'Bad Request',
+                $validator->errors()
             );
         }
 
@@ -75,12 +69,10 @@ class MangaController extends Controller
             'status' => $request->status
         ]);
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Create Manga Success',
-                $manga
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Create Manga Success',
+            $manga
         );
     }
 
@@ -91,20 +83,16 @@ class MangaController extends Controller
 
         if (!$manga) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    404,
-                    'Data Not Found'
-                )
+            return ApiFormatter::createJson(
+                404,
+                'Data Not Found'
             );
         }
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Get Detail Manga Success',
-                $manga
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Get Detail Manga Success',
+            $manga
         );
     }
 
@@ -115,11 +103,9 @@ class MangaController extends Controller
 
         if (!$manga) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    404,
-                    'Data Not Found'
-                )
+            return ApiFormatter::createJson(
+                404,
+                'Data Not Found'
             );
         }
 
@@ -131,12 +117,10 @@ class MangaController extends Controller
             'status' => $request->status
         ]);
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Update Manga Success',
-                $manga->fresh()
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Update Manga Success',
+            $manga->fresh()
         );
     }
 
@@ -147,21 +131,17 @@ class MangaController extends Controller
 
         if (!$manga) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    404,
-                    'Data Not Found'
-                )
+            return ApiFormatter::createJson(
+                404,
+                'Data Not Found'
             );
         }
 
         $manga->delete();
 
-        return response()->json(
-            ApiFormatter::createJson(
-                200,
-                'Delete Manga Success'
-            )
+        return ApiFormatter::createJson(
+            200,
+            'Delete Manga Success'
         );
     }
 }

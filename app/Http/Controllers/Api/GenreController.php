@@ -16,13 +16,11 @@ class GenreController extends Controller
     {
         $genre = GenreModel::orderBy('genre_id', 'ASC')->get();
 
-        $response = ApiFormatter::createJson(
+        return ApiFormatter::createJson(
             200,
             'Get Data Success',
             $genre
         );
-
-        return response()->json($response);
     }
 
     // CREATE GENRE
@@ -43,12 +41,10 @@ class GenreController extends Controller
 
             if ($validator->fails()) {
 
-                return response()->json(
-                    ApiFormatter::createJson(
-                        400,
-                        'Bad Request',
-                        $validator->errors()
-                    )
+                return ApiFormatter::createJson(
+                    400,
+                    'Bad Request',
+                    $validator->errors()
                 );
             }
 
@@ -61,22 +57,18 @@ class GenreController extends Controller
 
             $createdGenre = GenreModel::find($data->genre_id);
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    200,
-                    'Create Genre Success',
-                    $createdGenre
-                )
+            return ApiFormatter::createJson(
+                200,
+                'Create Genre Success',
+                $createdGenre
             );
 
         } catch (\Exception $e) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    500,
-                    'Internal Server Error',
-                    $e->getMessage()
-                )
+            return ApiFormatter::createJson(
+                500,
+                'Internal Server Error',
+                $e->getMessage()
             );
         }
     }
@@ -89,29 +81,23 @@ class GenreController extends Controller
             $genre = GenreModel::find($id);
 
             if (is_null($genre)) {
-                return response()->json(
-                    ApiFormatter::createJson(
-                        404,
-                        'Genre Not Found'
-                    )
+                return ApiFormatter::createJson(
+                    404,
+                    'Genre Not Found'
                 );
             }
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    200,
-                    'Get Detail Genre Success',
-                    $genre
-                )
+            return ApiFormatter::createJson(
+                200,
+                'Get Detail Genre Success',
+                $genre
             );
 
         } catch (\Exception $e) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    400,
-                    $e->getMessage()
-                )
+            return ApiFormatter::createJson(
+                400,
+                $e->getMessage()
             );
         }
     }
@@ -126,11 +112,9 @@ class GenreController extends Controller
             $preGenre = GenreModel::find($id);
 
             if (is_null($preGenre)) {
-                return response()->json(
-                    ApiFormatter::createJson(
-                        404,
-                        'Data Not Found'
-                    )
+                return ApiFormatter::createJson(
+                    404,
+                    'Data Not Found'
                 );
             }
 
@@ -141,12 +125,10 @@ class GenreController extends Controller
 
             if ($validator->fails()) {
 
-                return response()->json(
-                    ApiFormatter::createJson(
-                        400,
-                        'Bad Request',
-                        $validator->errors()
-                    )
+                return ApiFormatter::createJson(
+                    400,
+                    'Bad Request',
+                    $validator->errors()
                 );
             }
 
@@ -157,22 +139,18 @@ class GenreController extends Controller
 
             $preGenre->update($genre);
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    200,
-                    'Update Genre Success',
-                    $preGenre->fresh()
-                )
+            return ApiFormatter::createJson(
+                200,
+                'Update Genre Success',
+                $preGenre->fresh()
             );
 
         } catch (\Exception $e) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    500,
-                    'Internal Server Error',
-                    $e->getMessage()
-                )
+            return ApiFormatter::createJson(
+                500,
+                'Internal Server Error',
+                $e->getMessage()
             );
         }
     }
@@ -187,11 +165,9 @@ class GenreController extends Controller
             $preGenre = GenreModel::find($id);
 
             if (is_null($preGenre)) {
-                return response()->json(
-                    ApiFormatter::createJson(
-                        404,
-                        'Data Not Found'
-                    )
+                return ApiFormatter::createJson(
+                    404,
+                    'Data Not Found'
                 );
             }
 
@@ -207,22 +183,18 @@ class GenreController extends Controller
 
             $preGenre->update($genre);
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    200,
-                    'Update Genre Success',
-                    $preGenre->fresh()
-                )
+            return ApiFormatter::createJson(
+                200,
+                'Update Genre Success',
+                $preGenre->fresh()
             );
 
         } catch (\Exception $e) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    500,
-                    'Internal Server Error',
-                    $e->getMessage()
-                )
+            return ApiFormatter::createJson(
+                500,
+                'Internal Server Error',
+                $e->getMessage()
             );
         }
     }
@@ -235,31 +207,25 @@ class GenreController extends Controller
             $genre = GenreModel::find($id);
 
             if (is_null($genre)) {
-                return response()->json(
-                    ApiFormatter::createJson(
-                        404,
-                        'Data Not Found'
-                    )
+                return ApiFormatter::createJson(
+                    404,
+                    'Data Not Found'
                 );
             }
 
             $genre->delete();
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    200,
-                    'Delete Genre Success'
-                )
+            return ApiFormatter::createJson(
+                200,
+                'Delete Genre Success'
             );
 
         } catch (\Exception $e) {
 
-            return response()->json(
-                ApiFormatter::createJson(
-                    500,
-                    'Internal Server Error',
-                    $e->getMessage()
-                )
+            return ApiFormatter::createJson(
+                500,
+                'Internal Server Error',
+                $e->getMessage()
             );
         }
     }
